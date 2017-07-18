@@ -1,0 +1,1 @@
+"use strict";console.log("este archivo tiene ES6");

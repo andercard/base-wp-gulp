@@ -1,0 +1,1 @@
+console.log('este archivo tambien se compilo con el vendor');
