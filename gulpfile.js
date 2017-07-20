@@ -28,11 +28,14 @@ const ruta = {
 const files= {
         css: [
           `${ruta.nm}/bootstrap/dist/css/bootstrap.min.css`,
-          `${ruta.src}/css/main.css`
+          `${ruta.nm}/slick-carousel/slick/slick.css`,
+          `${ruta.nm}/slick-carousel/slick/slick-theme.css`,
+          `${ruta.src}/css/font-awesome.css`
         ],
         js: [
           `${ruta.nm}/tether/dist/js/tether.min.js`,
           `${ruta.nm}/bootstrap/dist/js/bootstrap.min.js`,
+          `${ruta.nm}/slick-carousel/slick/slick.min.js`,
           `${ruta.src}/jsVendor/main.js`
         ],
         staticFont : [
@@ -58,6 +61,9 @@ const  opts = {
         },
         uglify: {
           compress: true
+        },
+        cleancss: {
+          rebase: false
         }
       };
 
@@ -84,7 +90,7 @@ gulp.task('sass', () => {
     .pipe(plumber())
     .pipe( sassLint() )
     .pipe( sass( opts.sass ) )
-    .pipe( cleanCss())
+    .pipe( cleanCss(opts.cleancss))
     .pipe( autoprefixer(opts.autoprefixer))
     .pipe( cssnano())
     .pipe( gulp.dest( `./` ) )
@@ -97,7 +103,7 @@ gulp.task('vendorcss', () => {
   gulp
     .src( files.css )
     .pipe( autoprefixer(opts.autoprefixer))
-    .pipe( cleanCss ())
+    .pipe( cleanCss(opts.cleancss))
     .pipe( concat( 'vendorcss.min.css' ) )
     .pipe( gulp.dest( `./css` ) )
     .pipe( notify( { message: 'vendor Css completo! <%= file.relative %>', onLast: true } ) )
@@ -134,7 +140,7 @@ gulp.task('js', ['es6', 'vendorjs']);
 // optimizar imagenes
 gulp.task('image', function () {
   gulp
-    .src(`./images/**/*.+(png|jpg|jpeg|gif)`)
+    .src(`${ruta.src}/images/**/*.+(png|jpg|jpeg|gif)`)
     .pipe(image())
     .pipe( gulp.dest(`./images`) )
 });
